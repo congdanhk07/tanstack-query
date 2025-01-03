@@ -7,6 +7,10 @@ function App() {
       label: 'Home',
     },
     {
+      path: 'posts',
+      label: 'Posts',
+    },
+    {
       path: 'profile',
       label: 'Profile',
     },

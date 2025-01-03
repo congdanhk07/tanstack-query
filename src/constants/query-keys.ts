@@ -1,3 +1,6 @@
 export const QueryKeys = {
   TNX_DETAILS: 'TNX_DETAILS',
+  POST_LIST: 'POST_LIST',
+  COMMENT_LIST: 'COMMENT_LIST',
+  PROFILE: 'PROFILE',
 }

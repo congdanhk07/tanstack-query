@@ -8,6 +8,7 @@ import App from './App'
 import './index.css'
 import ProfilePage from './pages/profile'
 import TnxDetailsComponent from './pages/tnx-details'
+import { Posts } from './pages/posts'
 // import TnxDetailsComponent from './pages/tnx-details'
 
 // create once with default options
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <ProfilePage />,
+      },
+      {
+        path: 'posts',
+        element: <Posts />,
       },
       {
         path: 'tnx-details',

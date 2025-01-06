@@ -1,0 +1,34 @@
+/* Navbar container */
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Navbar list item styling */
+ul li {
+  margin: 0 15px;
+}
+
+/* Styling for NavLink */
+ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  padding: 10px 15px;
+  display: block;
+  transition: all 0.3s ease;
+}
+/* Active NavLink styling */
+ul li a[aria-current='page'] {
+  font-weight: bold;
+  color: goldenrod;
+}
+
+/* Optional: Add a border or underline for active links */
+ul li a[aria-current='page']:hover {
+  background-color: transparent;
+  color: goldenrod;
+}

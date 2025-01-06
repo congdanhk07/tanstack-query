@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
-
+import './css/menu-bar.css'
+import './index.css'
 function App() {
   const urlList = [
     {

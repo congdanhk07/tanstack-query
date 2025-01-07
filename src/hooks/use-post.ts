@@ -1,7 +1,7 @@
 import { Comment, commentApi } from '@/api/comment-api'
 import { Post, postApi } from '@/api/post-api'
 import { QueryKeys } from '@/constants/query-keys'
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 export const usePosts = (
   currentPage: number,
@@ -14,6 +14,13 @@ export const usePosts = (
     queryFn: () => postApi.getPosts(currentPage),
   })
 }
+export const useDeletePost = (options?: Omit<UseMutationOptions<void, Error, number>, 'mutationFn'>) => {
+  return useMutation({
+    mutationFn: (postId: number) => postApi.deletePost(postId),
+    ...options,
+  })
+}
+
 export const useComments = (
   postId: number,
   options?: Omit<UseQueryOptions<Comment[], Error>, 'queryKey' | 'queryFn'>,

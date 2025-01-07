@@ -3,7 +3,11 @@
 import { Post } from '@/api/post-api'
 import { useComments } from '@/hooks/use-post'
 
-export function PostDetail({ post }: { post: Post }) {
+type Props = {
+  post: Post
+  handleDeletePost: (postId: number) => void
+}
+export function PostDetail({ post, handleDeletePost }: Props) {
   const { data, isLoading, isError } = useComments(post.id)
   if (isLoading) {
     return <div>Loading comments...</div>
@@ -14,7 +18,7 @@ export function PostDetail({ post }: { post: Post }) {
   return (
     <>
       <h3 style={{ color: 'blue' }}>{post.title}</h3>
-      <button>Delete</button> <button>Update title</button>
+      <button onClick={() => handleDeletePost(post.id)}>Delete</button> <button>Update title</button>
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data?.map((comment) => (

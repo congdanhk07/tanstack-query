@@ -1,7 +1,7 @@
 import { Post, postApi } from '@/api/post-api'
 import { PostDetail } from '@/components/post-detail'
 import { QueryKeys } from '@/constants/query-keys'
-import { usePosts } from '@/hooks/use-post'
+import { useDeletePost, usePosts } from '@/hooks/use-post'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
@@ -12,6 +12,17 @@ export function Posts() {
   const [selectedPost, setSelectedPost] = useState<Post>({} as Post)
   const queryClient = useQueryClient()
   const { data, isLoading, error } = usePosts(currentPage)
+  const deletePostMutation = useDeletePost()
+  const handleDeletePost = (postId: number) => {
+    deletePostMutation.mutate(postId, {
+      onSuccess: () => {
+        console.log(`Post with id ${postId} deleted successfully`)
+      },
+      onError: (error) => {
+        console.error('Error deleting post:', error)
+      },
+    })
+  }
 
   useEffect(() => {
     if (currentPage < maxPostPage) {
@@ -46,7 +57,7 @@ export function Posts() {
         </button>
       </div>
       <hr />
-      {selectedPost && <PostDetail post={selectedPost} />}
+      {selectedPost && <PostDetail post={selectedPost} handleDeletePost={handleDeletePost} />}
     </>
   )
 }

@@ -1,8 +1,8 @@
 import { Post, postApi } from '@/api/post-api'
 import { PostDetail } from '@/components/post-detail'
 import { QueryKeys } from '@/constants/query-keys'
-import { useDeletePost, usePosts } from '@/hooks/use-post'
-import { useQueryClient } from '@tanstack/react-query'
+import { usePosts } from '@/hooks/use-post'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 const maxPostPage = 10
@@ -12,18 +12,13 @@ export function Posts() {
   const [selectedPost, setSelectedPost] = useState<Post>({} as Post)
   const queryClient = useQueryClient()
   const { data, isLoading, error } = usePosts(currentPage)
-  const deletePostMutation = useDeletePost()
-  const handleDeletePost = (postId: number) => {
-    deletePostMutation.mutate(postId, {
-      onSuccess: () => {
-        console.log(`Post with id ${postId} deleted successfully`)
-      },
-      onError: (error) => {
-        console.error('Error deleting post:', error)
-      },
-    })
-  }
 
+  const deleteMutation = useMutation({
+    mutationFn: (postId: number) => postApi.deletePost(postId),
+  })
+  const updateMutation = useMutation({
+    mutationFn: (postId: number) => postApi.updatePost(postId),
+  })
   useEffect(() => {
     if (currentPage < maxPostPage) {
       const nextPage = currentPage + 1
@@ -42,7 +37,15 @@ export function Posts() {
       <h1>Posts</h1>
       <ol>
         {data?.map((post: Post) => (
-          <li key={post.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedPost(post)}>
+          <li
+            key={post.id}
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              deleteMutation.reset()
+              updateMutation.reset()
+              setSelectedPost(post)
+            }}
+          >
             {post.title}
           </li>
         ))}
@@ -57,7 +60,9 @@ export function Posts() {
         </button>
       </div>
       <hr />
-      {selectedPost && <PostDetail post={selectedPost} handleDeletePost={handleDeletePost} />}
+      {selectedPost && (
+        <PostDetail post={selectedPost} deleteMutation={deleteMutation} updateMutation={updateMutation} />
+      )}
     </>
   )
 }
